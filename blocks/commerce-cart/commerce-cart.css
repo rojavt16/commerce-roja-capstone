@@ -11,6 +11,31 @@
   display: none;
 }
 
+.cart__free-shipping {
+  margin: var(--spacing-xsmall) 0 0;
+  padding: var(--spacing-xsmall) var(--spacing-small);
+  border-left: var(--shape-border-width-4) solid var(--color-informational-800);
+  border-radius: var(--shape-border-radius-1);
+  background-color: var(--color-informational-200);
+  color: var(--color-neutral-800);
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+}
+
+.cart__free-shipping--qualified {
+  border-left-color: var(--color-positive-800);
+  background-color: var(--color-positive-200);
+  font: var(--type-body-2-strong-font);
+  letter-spacing: var(--type-body-2-strong-letter-spacing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart__free-shipping {
+    transition: none;
+  }
+}
+
 .cart__wrapper {
   display: flex;
   flex-direction: column;

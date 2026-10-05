@@ -403,6 +403,31 @@ header nav .nav-tools button.nav-search-button {
   background-position: center;
 }
 
+header nav .nav-tools button.nav-theme-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header nav .nav-tools .nav-theme-button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+header nav .nav-tools .nav-theme-button__sun,
+:root[data-theme="dark"] header nav .nav-tools .nav-theme-button__moon {
+  display: none;
+}
+
+:root[data-theme="dark"] header nav .nav-tools .nav-theme-button__sun {
+  display: block;
+}
+
 header .nav-search-panel {
   padding: var(--spacing-small);
   box-sizing: border-box;
@@ -902,4 +927,18 @@ body:has(.seller-assisted-buying-banner) {
     line-height: 1.1;
     display: inline-block;
   }
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+:root[data-theme="dark"] header nav .nav-tools button:is(.nav-cart-button, .nav-wishlist-button, .nav-search-button) {
+  filter: invert(1);
+}
+
+:root[data-theme="dark"] header nav .nav-tools button.nav-cart-button[data-count]::after {
+  background-color: #000;
+  color: #e5e5e5;
+}
+
+:root[data-theme="dark"] #auth-combine-wrapper {
+  background-color: var(--background-color);
 }

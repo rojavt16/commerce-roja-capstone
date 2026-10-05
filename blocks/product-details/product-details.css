@@ -45,6 +45,26 @@
   max-height: unset;;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .product-details__gallery--zoom .pdp-carousel__slide {
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+
+  .product-details__gallery--zoom .pdp-carousel__slide img {
+    transition: transform 0.15s ease-out;
+  }
+
+  .product-details__gallery--zoom .pdp-carousel__slide img.product-details__image--zoomed {
+    transform: scale(2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-details__gallery--zoom .pdp-carousel__slide img {
+    transition: none;
+  }
+}
 
 .product-details__configuration {
   grid-column: 1 / span 4;

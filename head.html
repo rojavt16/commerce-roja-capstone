@@ -4,6 +4,22 @@
   move-to-http-header="true"
 />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script nonce="aem">
+  (function () {
+    function applyTheme() {
+      var theme;
+      try { theme = localStorage.getItem('theme'); } catch (e) { theme = null; }
+      if (theme !== 'dark' && theme !== 'light') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.dataset.theme = theme;
+    }
+    applyTheme();
+    window.addEventListener('storage', function (e) { if (e.key === 'theme') applyTheme(); });
+    window.addEventListener('pageshow', function (e) { if (e.persisted) applyTheme(); });
+    document.addEventListener('prerenderingchange', applyTheme);
+  }());
+</script>
 <script nonce="aem" type="speculationrules">
     {
         "prerender": [{

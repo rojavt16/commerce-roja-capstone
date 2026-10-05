@@ -38,6 +38,36 @@ import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 
+function initImageMagnifier(gallery) {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  gallery.classList.add('product-details__gallery--zoom');
+
+  const getMainImage = (event) => (event.pointerType === 'mouse'
+    ? event.target.closest('.pdp-carousel__slide img')
+    : null);
+
+  gallery.addEventListener('pointermove', (event) => {
+    const img = getMainImage(event);
+    if (!img) return;
+
+    const rect = img.parentElement.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    img.style.transformOrigin = `${x}% ${y}%`;
+    img.classList.add('product-details__image--zoomed');
+  });
+
+  gallery.addEventListener('pointerout', (event) => {
+    const img = getMainImage(event);
+    if (!img) return;
+
+    img.classList.remove('product-details__image--zoomed');
+    img.style.transformOrigin = '';
+  });
+}
+
 /**
  * Checks if the page has prerendered product JSON-LD data
  * @returns {boolean} True if product JSON-LD exists and contains @type=Product
@@ -145,6 +175,9 @@ export default async function decorate(block) {
   const $attributes = fragment.querySelector('.product-details__attributes');
 
   block.replaceChildren(fragment);
+
+  initImageMagnifier($gallery);
+  initImageMagnifier($galleryMobile);
 
   const gallerySlots = {
     CarouselThumbnail: (ctx) => {

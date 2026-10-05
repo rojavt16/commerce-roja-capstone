@@ -40,6 +40,21 @@ import {
   renderCartItemPromotions,
 } from '../../scripts/commerce.js';
 
+const FREE_SHIPPING_THRESHOLD = 50;
+
+function updateFreeShippingMessage(el, cartData) {
+  const subtotal = cartData?.subtotal?.excludingTax;
+  const value = subtotal?.value ?? 0;
+  const currency = subtotal?.currency || 'USD';
+  const format = (amount) => new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(amount);
+  const qualified = value >= FREE_SHIPPING_THRESHOLD;
+
+  el.classList.toggle('cart__free-shipping--qualified', qualified);
+  el.textContent = qualified
+    ? 'You qualify for free shipping!'
+    : `Free shipping on orders over ${format(FREE_SHIPPING_THRESHOLD)} – add ${format(FREE_SHIPPING_THRESHOLD - value)} more to qualify.`;
+}
+
 export default async function decorate(block) {
   // Configuration
   const {
@@ -188,6 +203,14 @@ export default async function decorate(block) {
       enableRemoveItem: enableRemoveItem === 'true',
       undo: undo === 'true',
       slots: {
+        Heading: (ctx) => {
+          const freeShipping = document.createElement('p');
+          freeShipping.className = 'cart__free-shipping';
+          freeShipping.setAttribute('role', 'status');
+          updateFreeShippingMessage(freeShipping, Cart.getCartDataFromCache());
+          events.on('cart/data', (cartData) => updateFreeShippingMessage(freeShipping, cartData), { eager: true });
+          ctx.appendChild(freeShipping);
+        },
         Thumbnail: (ctx) => {
           const { item, defaultImageProps } = ctx;
           const anchorWrapper = document.createElement('a');
