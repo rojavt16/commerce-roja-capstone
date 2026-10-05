@@ -66,6 +66,16 @@
   }
 }
 
+.product-details__gallery .pdp-carousel__controls {
+  gap: 0;
+}
+
+.product-details__gallery .pdp-carousel__controls__button {
+  box-sizing: content-box;
+  padding: 7px;
+  background-clip: content-box;
+}
+
 .product-details__configuration {
   grid-column: 1 / span 4;
   display: grid;

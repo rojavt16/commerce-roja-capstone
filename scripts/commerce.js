@@ -214,6 +214,14 @@ function initializeAdobeDataLayer(pageType) {
 export async function fetchIndex(indexFile, pageSize = 500) {
   const handleIndex = async (offset) => {
     const resp = await fetch(`/${indexFile}.json?limit=${pageSize}&offset=${offset}`);
+    if (!resp.ok) {
+      return {
+        complete: true,
+        offset,
+        promise: null,
+        data: window.index[indexFile].data,
+      };
+    }
     const json = await resp.json();
 
     const newIndex = {

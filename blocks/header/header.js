@@ -259,8 +259,6 @@ export default async function decorate(block) {
       .forEach((navSection) => {
         if (navSection.querySelector('ul')) {
           navSection.classList.add('nav-drop');
-          navSection.setAttribute('role', 'button');
-          navSection.setAttribute('aria-haspopup', 'true');
           navSection.setAttribute('aria-expanded', 'false');
         }
         setupSubmenu(navSection);

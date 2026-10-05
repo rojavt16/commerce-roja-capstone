@@ -38,6 +38,21 @@ import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 
+function wrapOrphanListItems(container) {
+  container.querySelectorAll('li').forEach((li) => {
+    if (['UL', 'OL', 'MENU'].includes(li.parentElement.tagName)) return;
+    const prev = li.previousElementSibling;
+    if (prev?.matches('ul[data-orphan-list]')) {
+      prev.append(li);
+      return;
+    }
+    const list = document.createElement('ul');
+    list.dataset.orphanList = '';
+    li.before(list);
+    list.append(li);
+  });
+}
+
 function initImageMagnifier(gallery) {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
@@ -178,6 +193,9 @@ export default async function decorate(block) {
 
   initImageMagnifier($gallery);
   initImageMagnifier($galleryMobile);
+
+  new MutationObserver(() => wrapOrphanListItems($description))
+    .observe($description, { childList: true, subtree: true });
 
   const gallerySlots = {
     CarouselThumbnail: (ctx) => {
