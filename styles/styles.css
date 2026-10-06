@@ -206,6 +206,10 @@ main {
   grid-row: 2;
 }
 
+main:has(.product-details, .commerce-cart, .product-list-page) {
+  min-height: 100vh;
+}
+
 footer {
   grid-row: 3;
 }
