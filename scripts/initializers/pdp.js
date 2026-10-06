@@ -1,7 +1,7 @@
 import { initializers } from '@dropins/tools/initializer.js';
 import { Image, provider as UI } from '@dropins/tools/components.js';
 import { initialize, setEndpoint, fetchProductData } from '@dropins/storefront-pdp/api.js';
-import { isAemAssetsEnabled, tryGenerateAemAssetsOptimizedUrl } from '@dropins/tools/lib/aem/assets.js';
+import { isAemAssetsEnabled, isAemAssetsUrl, tryGenerateAemAssetsOptimizedUrl } from '@dropins/tools/lib/aem/assets.js';
 import { initializeDropin } from './index.js';
 import {
   CS_FETCH_GRAPHQL,
@@ -66,7 +66,12 @@ function preloadPDPAssets() {
   const imageUrl = extractMainImageUrl();
 
   if (imageUrl) {
-    preloadFile(imageUrl, 'image');
+    const url = new URL(imageUrl, window.location.href);
+    if (!(isAemAssetsEnabled() && isAemAssetsUrl(url))) {
+      url.searchParams.set('width', IMAGES_SIZES.width);
+      url.searchParams.set('height', IMAGES_SIZES.height);
+    }
+    preloadFile(url.toString(), 'image');
   } else {
     console.warn('Unable to infer main image from JSON-LD or meta tags');
   }

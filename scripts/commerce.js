@@ -127,7 +127,11 @@ export function preloadFile(href, as) {
   const link = document.createElement('link');
   link.rel = 'preload';
   link.as = as;
-  link.crossOrigin = 'anonymous';
+  if (as === 'image') {
+    link.fetchPriority = 'high';
+  } else {
+    link.crossOrigin = 'anonymous';
+  }
   link.href = href;
   document.head.appendChild(link);
 }
